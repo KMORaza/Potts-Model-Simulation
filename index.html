@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Potts Model Simulation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Michroma&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #FFFFCC;
+            font-family: 'Quicksand', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+        canvas {
+            border: 1px solid black;
+        }
+        #controls, #controlPanel {
+            margin-top: 10px;
+        }
+        #metrics {
+            margin-top: 10px;
+        }
+        label {
+            font-family: 'Quicksand', sans-serif;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .control-container {
+            margin-bottom: 20px;
+        }
+        .control-label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        .control-label span {
+            margin-left: 10px;
+        }
+        .slider-container {
+            display: block;
+        }
+        .slider-container input[type="range"], 
+        .slider-container input[type="number"], 
+        .slider-container select {
+            background-color: black;
+            color: white;
+            border: 2px solid white;
+            border-radius: 5px;
+            font-family: 'Michroma', sans-serif;
+            padding: 5px;
+            margin: 0;
+            display: block;
+            width: calc(100% - 20px);
+        }
+        select {
+            padding: 5px;
+        }
+        button {
+            background-color: #009999;
+            color: white;
+            border: 2px solid white;
+            border-radius: 5px;
+            font-family: 'Quicksand', sans-serif;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-transform: uppercase;
+        }
+        button:hover {
+            background-color: #007d7d;
+        }
+    </style>
+</head>
+<body>
+    <h1>Potts Model Simulation</h1>
+    <canvas id="pottsCanvas" width="500" height="500"></canvas>
+    
+    <div id="controlPanel">
+        <div class="control-container">
+            <div class="control-label">
+                <label for="temperature">Temperature:</label>
+                <span id="temperatureValue">2.0</span>
+            </div>
+            <div class="slider-container">
+                <input type="range" id="temperature" min="0" max="5" step="0.1" value="2.0">
+            </div>
+        </div>
+        <div class="control-container">
+            <div class="control-label">
+                <label for="interactionStrength">Interaction Strength:</label>
+                <span id="interactionStrengthValue">1.0</span>
+            </div>
+            <div class="slider-container">
+                <input type="range" id="interactionStrength" min="0" max="10" step="0.1" value="1.0">
+            </div>
+        </div>
+        <div class="control-container">
+            <div class="control-label">
+                <label for="algorithm">Algorithm:</label>
+                <span id="algorithmValue"></span>
+            </div>
+            <div class="slider-container">
+                <select id="algorithm">
+                    <option value="metropolis">Metropolis</option>
+                    <option value="glauber">Glauber</option>
+                    <option value="wolff">Wolff</option>
+                </select>
+            </div>
+        </div>
+        <div class="control-container">
+            <div class="control-label">
+                <label for="speed">Speed (ms per frame):</label>
+                <span id="speedValue">10</span>
+            </div>
+            <div class="slider-container">
+                <input type="range" id="speed" min="1" max="100" step="1" value="10">
+            </div>
+        </div>
+        <div class="control-container">
+            <div class="control-label">
+                <label for="duration">Duration (s):</label>
+                <span id="durationValue">30</span>
+            </div>
+            <div class="slider-container">
+                <input type="number" id="duration" min="1" max="600" step="1" value="30">
+            </div>
+        </div>
+        <button onclick="applySettings()">Apply Settings</button>
+        <br>
+        <div id="controls">
+            <button onclick="startSimulation()">Start</button>
+            <button onclick="stopSimulation()">Stop</button>
+            <button onclick="resetSimulation()">Reset</button>
+            <button onclick="saveData('csv')">Save as CSV</button>
+            <button onclick="saveSnapshot()">Save Snapshot</button>
+        </div>
+    </div>
+    
+    <div id="metrics">
+        <h2>Metrics</h2>
+        <p>Magnetization: <span id="magnetization">0</span></p>
+        <p>Energy: <span id="energy">0</span></p>
+        <p>Correlation Function (r = 1): <span id="correlation">0</span></p>
+    </div>
+    
+    <!-- Developer Info Button -->
+    <button onclick="openDeveloperInfo()">Developer Info</button>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.2.0/math.min.js"></script>
+    <script src="PottsModel.js"></script>
+    <script>
+        function openDeveloperInfo() {
+            window.open('https://github.com/KMORaza', '_blank');
+        }
+    </script>
+</body>
+</html>
